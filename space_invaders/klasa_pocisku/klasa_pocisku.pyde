@@ -1,6 +1,7 @@
 class Bullet():
-    def __init__(self,pos):
-        rect(player.position,player.position,5,10)
-        self.position=pos
+    def __init__(self,player.positionX,player.positionY):
+        rect(player.positionX,player.positionY,5,10)
+        self.positionX=player.positionX
+        self.positionY=player.positionY
     def update(self):
-        self.position.y+=3
+        self.positionY+=3
