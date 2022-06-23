@@ -1,5 +1,3 @@
-global size_X
-global size_Y
 
 class Bullet():
     def __init__(self,player_positionX,player_positionY):
