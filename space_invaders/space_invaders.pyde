@@ -26,7 +26,41 @@ class Player():
             self.x = 0 + self.w
         if not (self.x <= width): #statek nie może wyjść z prawej
             self.x = (width - self.w)
-        
+
+class Przeciwnik(): #klasa Przeciwnik
+    def __init__(self, pozycja):
+        self.pozycja = pozycja
+        self.x = 50 + pozycja
+        self.y = 50
+        self.left = 0
+        self.right = 0
+        self.down = 0
+        self.speed = 10
+    def update(self): #poruszania w prawo, lewo i w dół
+        self.right = self.x + 1
+        self.x += self.speed
+        if not (self.x <= 600):
+            self.down = self.y
+            self.y += 20
+            self.x = 600
+            self.speed *= -1
+        if not (self.x >= 20):
+            self.down = self.y
+            self.y += 20
+            self.x = 20
+            self.speed *= -1
+            
+ def buttonsMenu(): #menu
+
+    def buttonsMenu():
+    global graStart = 0
+
+    if mousePressed:
+        if mouseX>y and mouseX<y+100 and mouseY>x and mouseY<x+100:
+            graStart = 1
+
+        if mouseX>y+150 and mouseX<y+250 and mouseY>x+150 and mouseY<x+250:
+            exit()        
         
 def setup():
     size(600, 600)
@@ -48,3 +82,5 @@ def keyReleased(): #bezruch statku przy puszczeniu strzałek
         player.goes_left = False
     if keyCode == RIGHT:
         player.goes_right = False
+
+        
