@@ -59,7 +59,7 @@ class Przeciwnik(): #klasa Przeciwnik
         if mouseX>y and mouseX<y+100 and mouseY>x and mouseY<x+100:
             graStart = 1
 
-        if mouseX>y+150 and mouseX<y+250 and mouseY>x+150 and mouseY<x+250:
+        if mouseX>y and mouseX<y+100 and mouseY>x+150 and mouseY<x+250:
             exit()        
         
 def setup():
