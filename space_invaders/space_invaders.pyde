@@ -1,10 +1,15 @@
 class Bullet():
-    def __init__(self,player_positionX,player_positionY):
-        rect(player_positionX,player_positionY,5,10)
-        self.positionX=player_positionX
-        self.positionY=player_positionY
+    def __init__(self, shooter_positionX, shooter_positionY):
+        self.positionX = shooter_positionX
+        self.positionY = shooter_positionY
+    def show(self):
+        rect(self.positionX, self.positionY, 5, 10) #tymczasowy pocisk
     def update(self):
-        self.positionY+=3
+        self.positionY -= 3 #tymczasowy ruch pocisku
+    def out_of_bounds(self, shooter_positionX, shooter_positionY):  #obsługa pocisku poza obszarem gry
+        if self.positionY > height + 50 or self.positionY < 0 - 50: #powrot pocisku do obiektu strzelajacego
+            self.positionX = shooter_positionX
+            self.positionY = shooter_positionY
         
 class Player():
     def __init__(self):
@@ -76,14 +81,18 @@ def setup():
     size(600, 600)
     global player
     player = Player()
-    global przeciwnik
+    global przeciwnik, bullet
     przeciwnik = Przeciwnik(40) # póżniej można zamienić na listę przeciwników
+    bullet = Bullet(player.x, player.y) #tymczasowy pocisk
     
 def draw():
     background(100)
     player.show()
     player.update()
-    
+    bullet.show() #tymczasowy pocisk
+    bullet.update()
+    bullet.out_of_bounds(player.x, player.y) #sprawdzanie czy pocisk jest poza obszarem gry
+
 def keyPressed(): #ruch statku przy kliknięciu strzałek
     if keyCode == LEFT:
         player.goes_left = True
