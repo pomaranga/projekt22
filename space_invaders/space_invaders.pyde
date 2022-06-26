@@ -1,4 +1,3 @@
-
 class Bullet():
     def __init__(self,player_positionX,player_positionY):
         rect(player_positionX,player_positionY,5,10)
@@ -36,6 +35,11 @@ class Przeciwnik(): #klasa Przeciwnik
         self.right = 0
         self.down = 0
         self.speed = 10
+        
+        # Atakowanie
+        self.lastAttackTime = 0
+        self.delayBetweenAttacks = 1000 # czas w milisekundach
+        
     def update(self): #poruszania w prawo, lewo i w dół
         self.right = self.x + 1
         self.x += self.speed
@@ -49,23 +53,31 @@ class Przeciwnik(): #klasa Przeciwnik
             self.y += 20
             self.x = 20
             self.speed *= -1
+    
+    def attack(self):
+        currentTime = millis()
+        delayBetweenAttacksPassed = (currentTime - self.lastAttackTime) > self.delayBetweenAttacks
+        if(delayBetweenAttacksPassed):
+            self.lastAttackTime = millis()
+            # tutaj dodać funkcję wystrzeliwującą pocisk
             
- def buttonsMenu(): #menu
-
     def buttonsMenu():
-    global graStart = 0
-
-    if mousePressed:
-        if mouseX>y and mouseX<y+100 and mouseY>x and mouseY<x+100:
-            graStart = 1
-
-        if mouseX>y and mouseX<y+100 and mouseY>x+150 and mouseY<x+250:
-            exit()        
-        
+        global graStart
+        graStart = 0
+    
+        if mousePressed:
+            if mouseX>y and mouseX<y+100 and mouseY>x and mouseY<x+100:
+                graStart = 1
+    
+            if mouseX>y and mouseX<y+100 and mouseY>x+150 and mouseY<x+250:
+                exit()        
+            
 def setup():
     size(600, 600)
     global player
     player = Player()
+    global przeciwnik
+    przeciwnik = Przeciwnik(40) # póżniej można zamienić na listę przeciwników
     
 def draw():
     background(100)
@@ -82,5 +94,3 @@ def keyReleased(): #bezruch statku przy puszczeniu strzałek
         player.goes_left = False
     if keyCode == RIGHT:
         player.goes_right = False
-
-        
