@@ -71,15 +71,17 @@ class Przeciwnik(): #klasa Przeciwnik
 
 class HeartPlayer():
     
-    def __init__(self,player_heart): 
-        self.player_heart = player_heart
-        player_heart = 3
-    
-    def loss_heart():
-            player_heart -= 1
-        if Player(player_heart) = 0:
-            text"GAME OVER"
-            #tutaj wstawić okno końca gry            
+    def __init__(self): 
+        self.player_heart = 3
+         
+    def loss_heart(self):
+        self.player_heart -= 1
+        if self.player_heart == 0:
+            text("GAME OVER", height/2,width/4)
+            #tutaj wstawić okno końca gry    
+ 
+    def show(self):
+        text(self.player_heart, 30, 50)   
 
 def buttonsMenu():
     global graStart
@@ -96,10 +98,11 @@ def setup():
     size(600, 600)
     global player, bullets
     player = Player()
-    global przeciwnik, bullet
+    global przeciwnik, bullet, player_heart
     przeciwnik = Przeciwnik(40) # póżniej można zamienić na listę przeciwników
     bullet = Bullet(player.x, player.y) #tymczasowy pocisk
     bullets = []
+    player_heart = HeartPlayer()
     textSize(30)
 def draw():
     background(100)
@@ -108,7 +111,7 @@ def draw():
     bullet.show() #tymczasowy pocisk
     bullet.update(player.y)
     bullet.is_out_of_bounds(player.x, player.y) #sprawdzanie czy pocisk jest poza obszarem gry
-    text(self.player_heart, height/4, width/6) 
+    player_heart.show()
     
 def keyPressed(): #ruch statku przy kliknięciu strzałek
     if keyCode == LEFT:
