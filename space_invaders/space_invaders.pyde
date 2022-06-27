@@ -6,7 +6,7 @@ class Bullet():
         rect(self.positionX, self.positionY, 5, 10) #tymczasowy pocisk
     def update(self):
         self.positionY -= 3 #tymczasowy ruch pocisku
-    def out_of_bounds(self, shooter_positionX, shooter_positionY):  #obsługa pocisku poza obszarem gry
+    def is_out_of_bounds(self, shooter_positionX, shooter_positionY):  #obsługa pocisku poza obszarem gry
         if self.positionY > height + 50 or self.positionY < 0 - 50: #powrot pocisku do obiektu strzelajacego
             self.positionX = shooter_positionX
             self.positionY = shooter_positionY
@@ -66,16 +66,16 @@ class Przeciwnik(): #klasa Przeciwnik
             self.lastAttackTime = millis()
             # tutaj dodać funkcję wystrzeliwującą pocisk
             
-    def buttonsMenu():
-        global graStart
-        graStart = 0
+def buttonsMenu():
+    global graStart
+    graStart = 0
     
-        if mousePressed:
-            if mouseX>y and mouseX<y+100 and mouseY>x and mouseY<x+100:
-                graStart = 1
+    if mousePressed:
+        if mouseX>y and mouseX<y+100 and mouseY>x and mouseY<x+100:
+            graStart = 1
     
-            if mouseX>y and mouseX<y+100 and mouseY>x+150 and mouseY<x+250:
-                exit()        
+        if mouseX>y and mouseX<y+100 and mouseY>x+150 and mouseY<x+250:
+            exit()        
             
 def setup():
     size(600, 600)
@@ -92,7 +92,7 @@ def draw():
     player.update()
     bullet.show() #tymczasowy pocisk
     bullet.update()
-    bullet.out_of_bounds(player.x, player.y) #sprawdzanie czy pocisk jest poza obszarem gry
+    bullet.is_out_of_bounds(player.x, player.y) #sprawdzanie czy pocisk jest poza obszarem gry
 
 def keyPressed(): #ruch statku przy kliknięciu strzałek
     if keyCode == LEFT:
