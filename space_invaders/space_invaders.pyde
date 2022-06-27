@@ -79,11 +79,12 @@ class Przeciwnik(): #klasa Przeciwnik
             
 def setup():
     size(600, 600)
-    global player
+    global player, bullets
     player = Player()
     global przeciwnik, bullet
     przeciwnik = Przeciwnik(40) # póżniej można zamienić na listę przeciwników
     bullet = Bullet(player.x, player.y) #tymczasowy pocisk
+    bullets = []
     
 def draw():
     background(100)
