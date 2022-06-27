@@ -4,8 +4,11 @@ class Bullet():
         self.positionY = shooter_positionY
     def show(self):
         rect(self.positionX, self.positionY, 5, 10) #tymczasowy pocisk
-    def update(self):
-        self.positionY -= 3 #tymczasowy ruch pocisku
+    def update(self, shooter_positionY):
+        if shooter_positionY <= 600 and shooter_positionY >= 200: #przykładowy zakres pozycji gracza
+            self.positionY -= 5 #szybkość lotu
+        if shooter_positionY < 200: #przykładowy zakres pozycji wroga
+            self.positionY += 5 #szybkość lotu
     def is_out_of_bounds(self, shooter_positionX, shooter_positionY):  #obsługa pocisku poza obszarem gry
         if self.positionY > height + 50 or self.positionY < 0 - 50: #powrot pocisku do obiektu strzelajacego
             self.positionX = shooter_positionX
@@ -91,7 +94,7 @@ def draw():
     player.show()
     player.update()
     bullet.show() #tymczasowy pocisk
-    bullet.update()
+    bullet.update(player.y)
     bullet.is_out_of_bounds(player.x, player.y) #sprawdzanie czy pocisk jest poza obszarem gry
 
 def keyPressed(): #ruch statku przy kliknięciu strzałek
