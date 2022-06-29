@@ -75,6 +75,10 @@ class Przeciwnik(): #klasa Przeciwnik
         self.x =  offset
         rect(self.x ,self.y,self.w,self.h)#zamienić późnie
         
+    def show(self):
+        img = loadImage("Przeciwnik_1.png") #wczytywanie grafiki przeciwnika na wyzej ustalona pozycje
+        image(img, self.x, self.y)
+        
         # Atakowanie
         self.lastAttackTime = 0
         self.delayBetweenAttacks = 1000 # czas w milisekundach
