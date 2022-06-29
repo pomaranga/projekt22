@@ -56,14 +56,24 @@ class Player():
 
 class Przeciwnik(): #klasa Przeciwnik
     
-    def __init__(self, pozycja):
-        self.pozycja = pozycja
-        self.x = 50 + pozycja
+    def __init__(self):
+        self.pozycja = 0
+        self.x = 50 + 0
         self.y = 50
         self.left = 0
         self.right = 0
         self.down = 0
         self.speed = 10
+        self.w=20
+        self.h= 20
+        
+        #wróg
+    def show(self, offset):
+        #global pozycja_statku
+        fill(0)#usunąć kiedy będzie już model wroga
+        #self.left_corner_enm_ship = self.pozycja+30
+        self.x =  offset
+        rect(self.x ,self.y,self.w,self.h)#zamienić późnie
         
         # Atakowanie
         self.lastAttackTime = 0
@@ -118,17 +128,22 @@ def buttonsMenu():
             
 def setup():
     size(600, 600)
-    global player, bullets, przeciwnik, bullet, player_heart, bariera
+    global player, bullets, przeciwnik, bullet, player_heart,enemies, bariera
     player = Player()
-    przeciwnik = Przeciwnik(40) # póżniej można zamienić na listę przeciwników
+    przeciwnik1 = Przeciwnik()# póżniej można zamienić na listę przeciwników
+    przeciwnik2 = Przeciwnik()
+    przeciwnik3 = Przeciwnik()
+    przeciwnik4 = Przeciwnik()
     bullet = Bullet(player.x, player.y) #tymczasowy pocisk
     bullets = []
+    enemies = [przeciwnik1, przeciwnik2, przeciwnik3, przeciwnik4]
     bariera=Bariera()
     player_heart = HeartPlayer()
     textSize(30)
     #tu powinna zostać stworzona lista wrogów
     
 def draw():
+    global player, bullets, przeciwnik, bullet, player_heart,enemies,pozycja_statku
     background(100)
     player.show()
     player.update()
@@ -137,6 +152,10 @@ def draw():
     bullet.is_out_of_bounds(player.x, player.y) #sprawdzanie czy pocisk jest poza obszarem gry
     player_heart.show()
     bariera.show()
+    for offset, enemy in enumerate(enemies):
+        print(offset)
+        enemy.show(offset * 50)
+        enemy.update()
     # tu powinno nastąpić wyświetlenie wrogów w pętli w liście oraz strzelanie przez nich
     
 def keyPressed(): #ruch statku przy kliknięciu strzałek
