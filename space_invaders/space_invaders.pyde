@@ -17,6 +17,15 @@ class Bullet():
         if self.positionY > height + 50 or self.positionY < 0 - 50: #powrot pocisku do obiektu strzelajacego
             self.positionX = shooter_positionX
             self.positionY = shooter_positionY
+            
+class Bariera():
+    def __init__(self):
+        self.positionX=height*25/60
+        self.positionY=height*5/6
+    def show(self):
+        rect(self.positionX,self.positionY,100,10) #tymczasowa bariera jedna
+    def destroy_part(self):        
+        pass    
         
         
 class Player():
@@ -106,11 +115,12 @@ def buttonsMenu():
             
 def setup():
     size(600, 600)
-    global player, bullets, przeciwnik, bullet, player_heart
+    global player, bullets, przeciwnik, bullet, player_heart, bariera
     player = Player()
     przeciwnik = Przeciwnik(40) # póżniej można zamienić na listę przeciwników
     bullet = Bullet(player.x, player.y) #tymczasowy pocisk
     bullets = []
+    bariera=Bariera()
     player_heart = HeartPlayer()
     textSize(30)
     #tu powinna zostać stworzona lista wrogów
@@ -123,6 +133,7 @@ def draw():
     bullet.update(player.y)
     bullet.is_out_of_bounds(player.x, player.y) #sprawdzanie czy pocisk jest poza obszarem gry
     player_heart.show()
+    bariera.show()
     # tu powinno nastąpić wyświetlenie wrogów w pętli w liście oraz strzelanie przez nich
     
 def keyPressed(): #ruch statku przy kliknięciu strzałek
