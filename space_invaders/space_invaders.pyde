@@ -65,6 +65,10 @@ class Przeciwnik(): #klasa Przeciwnik
         self.down = 0
         self.speed = 10
         
+    def show(self):
+        img = loadImage("Przeciwnik_1.png") #wczytywanie grafiki przeciwnika na wyzej ustalona pozycje
+        image(img, self.x, self.y)
+        
         # Atakowanie
         self.lastAttackTime = 0
         self.delayBetweenAttacks = 1000 # czas w milisekundach
