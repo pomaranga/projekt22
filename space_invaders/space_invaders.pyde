@@ -5,7 +5,10 @@ class Bullet():
         self.positionY = shooter_positionY
         
     def show(self):
-        rect(self.positionX, self.positionY, 5, 10) #tymczasowy pocisk
+        img = loadImage("Pocisk 1.png")
+        image(img, self.positionX, self.positionY)
+        
+            
         
     def update(self, shooter_positionY):
         if shooter_positionY <= 600 and shooter_positionY >= 200: #przykładowy zakres pozycji gracza
