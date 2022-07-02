@@ -58,22 +58,21 @@ class Player():
 class Przeciwnik(): #klasa Przeciwnik
     
     def __init__(self):
+        self.pozycja = 0
         self.x = 50
         self.y = 50
         self.down = 0
-        self.speed = 10
+        self.speed = 2
         self.w=20
         self.h= 20
+        self.img = loadImage("Przeciwnik_{}.png".format(int(random(4))))
         
         #wróg
     def show(self, offset):
         fill(0)#usunąć kiedy będzie już model wroga
-        #self.left_corner_enm_ship = self.pozycja+30
-        print(offset)
-        self.x +=  offset
-        rect(self.x ,self.y,self.w,self.h)#zamienić później
-        img = loadImage("Przeciwnik_1.png") #wczytywanie grafiki przeciwnika na wyzej ustalona pozycje
-        image(img, self.x, self.y, self.w, self.h)
+        self.pozycja = offset
+        rect(self.x ,self.y, self.w, self.h)#zamienić później
+        image(self.img, self.x+self.pozycja, self.y, self.w, self.h) #wyświetlanie grafiki przeciwnika na wyzej ustalona pozycje
         
         # Atakowanie
         self.lastAttackTime = 0
@@ -84,14 +83,12 @@ class Przeciwnik(): #klasa Przeciwnik
         if not (self.x <= width-self.w/2):
             self.down = self.y
             self.y += 20
-            #self.x = 600
             self.speed *= -1
         if not (self.x >= 0+self.w/2):
             self.down = self.y
             self.y += 20
-            #self.x = 20
+            self.x = 20
             self.speed *= -1
-        print(self.x)
     
     def attack(self):
         currentTime = millis()
@@ -128,6 +125,7 @@ def buttonsMenu():
             exit()        
             
 def setup():
+    #frameRate(10)
     size(600, 600)
     global player, bullets, przeciwnik, bullet, player_heart,enemies, bariera
     player = Player()
@@ -153,7 +151,7 @@ def draw():
     player_heart.show()
     bariera.show()
     for offset, enemy in enumerate(enemies):
-        enemy.show((offset+1) * 100)
+        enemy.show(offset * 100)
         enemy.update()
         enemy.attack()
     
