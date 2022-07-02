@@ -6,9 +6,7 @@ class Bullet():
         
     def show(self):
         img = loadImage("Pocisk 1.png")
-        image(img, self.positionX, self.positionY)
-        
-            
+        image(img, self.positionX, self.positionY)            
         
     def update(self, shooter_positionY):
         if shooter_positionY <= 600 and shooter_positionY >= 200: #przykładowy zakres pozycji gracza
@@ -20,13 +18,16 @@ class Bullet():
         if self.positionY > height + 50 or self.positionY < 0 - 50: #powrot pocisku do obiektu strzelajacego
             self.positionX = shooter_positionX
             self.positionY = shooter_positionY
-            
+
+
 class Bariera():
     def __init__(self):
         self.positionX=height*25/60
         self.positionY=height*5/6
+        
     def show(self):
         rect(self.positionX,self.positionY,100,10) #tymczasowa bariera jedna
+        
     def destroy_part(self):        
         pass    
         
@@ -57,8 +58,7 @@ class Player():
 class Przeciwnik(): #klasa Przeciwnik
     
     def __init__(self):
-        self.pozycja = 0
-        self.x = 50 + 0
+        self.x = 50
         self.y = 50
         self.left = 0
         self.right = 0
@@ -69,22 +69,19 @@ class Przeciwnik(): #klasa Przeciwnik
         
         #wróg
     def show(self, offset):
-        #global pozycja_statku
         fill(0)#usunąć kiedy będzie już model wroga
         #self.left_corner_enm_ship = self.pozycja+30
         self.x =  offset
-        rect(self.x ,self.y,self.w,self.h)#zamienić późnie
-        
-    def show(self):
+        rect(self.x ,self.y,self.w,self.h)#zamienić później
         img = loadImage("Przeciwnik_1.png") #wczytywanie grafiki przeciwnika na wyzej ustalona pozycje
-        image(img, self.x, self.y)
+        image(img, self.x, self.y, self.w, self.h)
         
         # Atakowanie
         self.lastAttackTime = 0
         self.delayBetweenAttacks = 1000 # czas w milisekundach
         
     def update(self): #poruszania w prawo, lewo i w dół
-        self.right = self.x + 1
+        #self.right = self.x + 1
         self.x += self.speed
         if not (self.x <= 600):
             self.down = self.y
@@ -104,6 +101,7 @@ class Przeciwnik(): #klasa Przeciwnik
             self.lastAttackTime = millis()
             # tutaj dodać funkcję wystrzeliwującą pocisk
             rect(100, 100, 100, 100) # do usunięcia, gdy pojawi się pocisk
+
 
 class HeartPlayer():
     
@@ -138,16 +136,15 @@ def setup():
     przeciwnik2 = Przeciwnik()
     przeciwnik3 = Przeciwnik()
     przeciwnik4 = Przeciwnik()
-    bullet = Bullet(player.x, player.y) #tymczasowy pocisk
+    bullet = Bullet(player.x, player.y) #tymczasowy pocisk gracza
     bullets = []
     enemies = [przeciwnik1, przeciwnik2, przeciwnik3, przeciwnik4]
     bariera=Bariera()
     player_heart = HeartPlayer()
     textSize(30)
-    #tu powinna zostać stworzona lista wrogów
     
 def draw():
-    global player, bullets, przeciwnik, bullet, player_heart,enemies,pozycja_statku
+    global player, bullets, przeciwnik, bullet, player_heart, enemies, pozycja_statku
     background(100)
     player.show()
     player.update()
@@ -157,19 +154,16 @@ def draw():
     player_heart.show()
     bariera.show()
     for offset, enemy in enumerate(enemies):
-        print(offset)
-        enemy.show(offset * 50)
         enemy.update()
-    # tu powinno nastąpić wyświetlenie wrogów w pętli w liście oraz strzelanie przez nich
+        enemy.show(offset * 50)
+        enemy.attack()
     
 def keyPressed(): #ruch statku przy kliknięciu strzałek
     if keyCode == LEFT:
         player.goes_left = True
     if keyCode == RIGHT:
         player.goes_right = True
-    if keyCode == UP: # należy przytrzymać strzałkę, aby obserwować pojawienie się kwadratu w momencie, gdy powinna pojawić się strzałą przeciwnika
-        przeciwnik.attack() # przykłąd wywołania strzału wroga, do użycia we właściwym miejscu
-
+        
 def keyReleased(): #bezruch statku przy puszczeniu strzałek
     if keyCode == LEFT:
         player.goes_left = False
