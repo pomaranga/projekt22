@@ -1,3 +1,11 @@
+from abc import ABCMeta, abstractmethod
+
+class Sprite():
+    __metaclass__=ABCMeta
+    @abstractmethod
+    def __init__(self, image):
+        self.image = image
+
 class Bullet():
     
     def __init__(self, shooter_positionX, shooter_positionY):
