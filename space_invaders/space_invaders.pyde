@@ -71,7 +71,7 @@ class Przeciwnik(): #klasa Przeciwnik
     def show(self, offset):
         fill(0)#usunąć kiedy będzie już model wroga
         self.pozycja = offset
-        rect(self.x ,self.y, self.w, self.h)#zamienić później
+        rect(self.x+self.pozycja ,self.y, self.w, self.h)#zamienić później
         image(self.img, self.x+self.pozycja, self.y, self.w, self.h) #wyświetlanie grafiki przeciwnika na wyzej ustalona pozycje
         
         # Atakowanie
@@ -80,14 +80,13 @@ class Przeciwnik(): #klasa Przeciwnik
         
     def update(self): #poruszania w prawo, lewo i w dół
         self.x += self.speed
-        if not (self.x <= width-self.w/2):
+        if not (self.x+self.pozycja <= width-self.w/2):
             self.down = self.y
             self.y += 20
             self.speed *= -1
-        if not (self.x >= 0+self.w/2):
+        if not (self.x+self.pozycja >= 0+self.w/2):
             self.down = self.y
             self.y += 20
-            self.x = 20
             self.speed *= -1
     
     def attack(self):
