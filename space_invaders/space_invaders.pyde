@@ -20,7 +20,7 @@ class Bullet():
             self.positionY = shooter_positionY
 
 
-class Bariera():
+class Barrier():
     def __init__(self):
         self.positionX=height*25/60
         self.positionY=height*5/6
@@ -55,10 +55,10 @@ class Player():
             self.x = (width - self.w)
 
 
-class Przeciwnik(): #klasa Przeciwnik
+class Enemy(): #klasa Przeciwnik
     
     def __init__(self):
-        self.pozycja = 0
+        self.position = 0
         self.x = 50
         self.y = 50
         self.down = 0
@@ -73,18 +73,18 @@ class Przeciwnik(): #klasa Przeciwnik
         #wróg
     def show(self, offset):
         fill(0)#usunąć kiedy będzie już model wroga
-        self.pozycja = offset
-        rect(self.x+self.pozycja ,self.y, self.w, self.h)#zamienić później
-        image(self.img, self.x+self.pozycja, self.y, self.w, self.h) #wyświetlanie grafiki przeciwnika na wyzej ustalona pozycje
+        self.position = offset
+        rect(self.x+self.position ,self.y, self.w, self.h)#zamienić później
+        image(self.img, self.x+self.position, self.y, self.w, self.h) #wyświetlanie grafiki przeciwnika na wyzej ustalona pozycje
         
         
     def update(self): #poruszania w prawo, lewo i w dół
         self.x += self.speed
-        if not (self.x+self.pozycja <= width-self.w/2):
+        if not (self.x+self.position <= width-self.w/2):
             self.down = self.y
             self.y += 20
             self.speed *= -1
-        if not (self.x+self.pozycja >= 0+self.w/2):
+        if not (self.x+self.position >= 0+self.w/2):
             self.down = self.y
             self.y += 20
             self.speed *= -1
@@ -113,12 +113,12 @@ class HeartPlayer():
         text(self.player_heart, 30, 50)   
 
 def buttonsMenu():
-    global graStart
-    graStart = 0
+    global gamePlay
+    gamePlay = 0
     
     if mousePressed:
         if mouseX>y and mouseX<y+100 and mouseY>x and mouseY<x+100:
-            graStart = 1
+            gamePlay = 1
     
         if mouseX>y and mouseX<y+100 and mouseY>x+150 and mouseY<x+250: # gdzie to jest? gdzie przycisk?
             exit()        
@@ -126,21 +126,21 @@ def buttonsMenu():
 def setup():
     #frameRate(10)
     size(600, 600)
-    global player, bullets, przeciwnik, bullet, player_heart,enemies, bariera
+    global player, bullets, przeciwnik, bullet, player_heart,enemies, barrier
     player = Player()
-    przeciwnik1 = Przeciwnik()# póżniej można zamienić na listę przeciwników
-    przeciwnik2 = Przeciwnik()
-    przeciwnik3 = Przeciwnik()
-    przeciwnik4 = Przeciwnik()
+    enemy1 = Enemy()# póżniej można zamienić na listę przeciwników
+    enemy2 = Enemy()
+    enemy3 = Enemy()
+    enemy4 = Enemy()
     bullet = Bullet(player.x, player.y) #tymczasowy pocisk gracza
     bullets = []
-    enemies = [przeciwnik1, przeciwnik2, przeciwnik3, przeciwnik4]
-    bariera=Bariera()
+    enemies = [enemy1, enemy2, enemy3, enemy4]
+    barrier=Barrier()
     player_heart = HeartPlayer()
     textSize(30)
     
 def draw():
-    global player, bullets, przeciwnik, bullet, player_heart, enemies, pozycja_statku
+    global player, bullets, enemy, bullet, player_heart, enemies
     background(100)
     player.show()
     player.update()
@@ -148,7 +148,7 @@ def draw():
     bullet.update(player.y)
     bullet.is_out_of_bounds(player.x, player.y) #sprawdzanie czy pocisk jest poza obszarem gry
     player_heart.show()
-    bariera.show()
+    barrier.show()
     for offset, enemy in enumerate(enemies):
         enemy.show(offset * 100)
         enemy.update()
