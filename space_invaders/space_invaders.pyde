@@ -60,8 +60,6 @@ class Przeciwnik(): #klasa Przeciwnik
     def __init__(self):
         self.x = 50
         self.y = 50
-        self.left = 0
-        self.right = 0
         self.down = 0
         self.speed = 10
         self.w=20
@@ -71,7 +69,8 @@ class Przeciwnik(): #klasa Przeciwnik
     def show(self, offset):
         fill(0)#usunąć kiedy będzie już model wroga
         #self.left_corner_enm_ship = self.pozycja+30
-        self.x =  offset
+        print(offset)
+        self.x +=  offset
         rect(self.x ,self.y,self.w,self.h)#zamienić później
         img = loadImage("Przeciwnik_1.png") #wczytywanie grafiki przeciwnika na wyzej ustalona pozycje
         image(img, self.x, self.y, self.w, self.h)
@@ -81,18 +80,18 @@ class Przeciwnik(): #klasa Przeciwnik
         self.delayBetweenAttacks = 1000 # czas w milisekundach
         
     def update(self): #poruszania w prawo, lewo i w dół
-        #self.right = self.x + 1
         self.x += self.speed
-        if not (self.x <= 600):
+        if not (self.x <= width-self.w/2):
             self.down = self.y
             self.y += 20
-            self.x = 600
+            #self.x = 600
             self.speed *= -1
-        if not (self.x >= 20):
+        if not (self.x >= 0+self.w/2):
             self.down = self.y
             self.y += 20
-            self.x = 20
+            #self.x = 20
             self.speed *= -1
+        print(self.x)
     
     def attack(self):
         currentTime = millis()
@@ -154,8 +153,8 @@ def draw():
     player_heart.show()
     bariera.show()
     for offset, enemy in enumerate(enemies):
+        enemy.show((offset+1) * 100)
         enemy.update()
-        enemy.show(offset * 50)
         enemy.attack()
     
 def keyPressed(): #ruch statku przy kliknięciu strzałek
