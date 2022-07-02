@@ -66,6 +66,9 @@ class Przeciwnik(): #klasa Przeciwnik
         self.w=20
         self.h= 20
         self.img = loadImage("Przeciwnik_{}.png".format(int(random(4))))
+        # Atakowanie
+        self.lastAttackTime = 0
+        self.delayBetweenAttacks = 1000 - random(300) # czas w milisekundach
         
         #wróg
     def show(self, offset):
@@ -74,9 +77,6 @@ class Przeciwnik(): #klasa Przeciwnik
         rect(self.x+self.pozycja ,self.y, self.w, self.h)#zamienić później
         image(self.img, self.x+self.pozycja, self.y, self.w, self.h) #wyświetlanie grafiki przeciwnika na wyzej ustalona pozycje
         
-        # Atakowanie
-        self.lastAttackTime = 0
-        self.delayBetweenAttacks = 1000 # czas w milisekundach
         
     def update(self): #poruszania w prawo, lewo i w dół
         self.x += self.speed
@@ -95,7 +95,7 @@ class Przeciwnik(): #klasa Przeciwnik
         if(delayBetweenAttacksPassed):
             self.lastAttackTime = millis()
             # tutaj dodać funkcję wystrzeliwującą pocisk
-            rect(100, 100, 100, 100) # do usunięcia, gdy pojawi się pocisk
+            rect(100, 100, 100, 100) # do usunięcia, gdy pojawi się pocisk (kwadrat pojawia się w momencie, gdy mają strzelić)
 
 
 class HeartPlayer():
