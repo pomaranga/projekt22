@@ -6,6 +6,22 @@ class Sprite():
     def __init__(self, image):
         self.image = image
 
+class MenuOption():
+    def __init__(self, height, width):
+        self.height = height
+        self.width = width
+
+    def sketch(self, x, y, colorR, colorG, colorB):
+        self.x = x
+        self.y = y
+        fill(colorR, colorG, colorB)
+        rect(self.x, self.y, self.width, self.height)
+
+    def sketchText(self, label, labelX, labelY, colorR, colorG, colorB):
+        fill(colorR, colorG, colorB)
+        textSize(25)
+        text(label, labelX, labelY)
+
 class Bullet():
     
     def __init__(self, shooter_positionX, shooter_positionY):
@@ -134,7 +150,7 @@ def buttonsMenu():
 def setup():
     #frameRate(10)
     size(600, 600)
-    global player, bullets, przeciwnik, bullet, player_heart,enemies, barrier
+    global player, bullets, przeciwnik, bullet, player_heart,enemies, barrier, menuButton
     player = Player()
     enemy1 = Enemy()# póżniej można zamienić na listę przeciwników
     enemy2 = Enemy()
@@ -146,9 +162,10 @@ def setup():
     barrier=Barrier()
     player_heart = HeartPlayer()
     textSize(30)
-    
+    menuButton = MenuOption(30, 100)
+
 def draw():
-    global player, bullets, enemy, bullet, player_heart, enemies
+    global player, bullets, enemy, bullet, player_heart, enemies, menuButton
     background(100)
     player.show()
     player.update()
@@ -161,7 +178,16 @@ def draw():
         enemy.show(offset * 100)
         enemy.update()
         enemy.attack()
-    
+
+    menuButton.sketch(290, 10, 0, 255, 0)
+    menuButton.sketchText("START", 305, 35, 0, 0, 255)
+
+    menuButton.sketch(390, 10, 0, 255, 0)
+    menuButton.sketchText("RESTART", 395, 35, 0, 0, 255)
+
+    menuButton.sketch(490, 10, 0, 255, 0)
+    menuButton.sketchText("STOP", 515, 35, 0, 0, 255)
+
 def keyPressed(): #ruch statku przy kliknięciu strzałek
     if keyCode == LEFT:
         player.goes_left = True
