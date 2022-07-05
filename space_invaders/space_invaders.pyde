@@ -180,13 +180,13 @@ def draw():
         enemy.attack()
 
     menuButton.sketch(290, 10, 0, 255, 0)
-    menuButton.sketchText("START", 305, 35, 0, 0, 255)
+    menuButton.sketchText("START", 305, 35, 255, 255, 255)
 
-    menuButton.sketch(390, 10, 0, 255, 0)
-    menuButton.sketchText("RESTART", 395, 35, 0, 0, 255)
+    menuButton.sketch(390, 10, 0, 0, 255)
+    menuButton.sketchText("RESTART", 395, 35, 255, 255, 255)
 
-    menuButton.sketch(490, 10, 0, 255, 0)
-    menuButton.sketchText("STOP", 515, 35, 0, 0, 255)
+    menuButton.sketch(490, 10, 255, 0, 0)
+    menuButton.sketchText("STOP", 515, 35, 255, 255, 255)
 
 def keyPressed(): #ruch statku przy kliknięciu strzałek
     if keyCode == LEFT:
