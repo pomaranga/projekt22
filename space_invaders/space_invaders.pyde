@@ -6,12 +6,16 @@ class Sprite():
     def __init__(self, image):
         self.image = image
 
-class MenuOption():
+class MenuOptions():
     def __init__(self, height, width):
         self.height = height
         self.width = width
+        self.startBtnPos = 290
+        self.restartBtnPos = 390
+        self.stopBtnPos = 490
+        self.btnGridLineStarts = 10
 
-    def sketch(self, x, y, colorR, colorG, colorB):
+    def sketchBtn(self, x, y, colorR, colorG, colorB):
         self.x = x
         self.y = y
         fill(colorR, colorG, colorB)
@@ -19,8 +23,27 @@ class MenuOption():
 
     def sketchText(self, label, labelX, labelY, colorR, colorG, colorB):
         fill(colorR, colorG, colorB)
-        textSize(25)
+        textSize(20)
         text(label, labelX, labelY)
+        
+    def sketchMenu(self):
+        self.sketchBtn(self.startBtnPos, self.btnGridLineStarts, 0, 255, 0)
+        self.sketchText("START", self.startBtnPos + 15, self.btnGridLineStarts + 25, 255, 255, 255)
+
+        self.sketchBtn(self.restartBtnPos, self.btnGridLineStarts, 0, 0, 255)
+        self.sketchText("RESTART", self.restartBtnPos + 5, self.btnGridLineStarts + 25, 255, 255, 255)
+
+        self.sketchBtn(self.stopBtnPos, self.btnGridLineStarts, 255, 0, 0)
+        self.sketchText("STOP", self.stopBtnPos + 25, self.btnGridLineStarts + 25, 255, 255, 255)
+        
+    def react(self):
+        if mousePressed:
+            if mouseX>0 and mouseX<0 and mouseY>0 and mouseY<0: # trzeba dopasowaćdo faktycznej pozycji przycisku
+                gamePlay = 1
+        
+            if mouseX>self.stopBtnPos and mouseX<self.stopBtnPos+self.width \
+                and mouseY>self.btnGridLineStarts and mouseY<self.btnGridLineStarts+self.height:
+                    exit()  
 
 class Bullet():
     
@@ -135,19 +158,11 @@ class HeartPlayer():
  
     def show(self):
         text(self.player_heart, 30, 50)   
-
-def buttonsMenu():
-    global gamePlay
-    gamePlay = 0
-    
-    if mousePressed:
-        if mouseX>y and mouseX<y+100 and mouseY>x and mouseY<x+100:
-            gamePlay = 1
-    
-        if mouseX>y and mouseX<y+100 and mouseY>x+150 and mouseY<x+250: # gdzie to jest? gdzie przycisk?
-            exit()        
+      
             
 def setup():
+    global gamePlay
+    gamePlay = 0
     #frameRate(10)
     size(600, 600)
     global player, bullets, przeciwnik, bullet, player_heart,enemies, barrier, menuButton
@@ -162,7 +177,7 @@ def setup():
     barrier=Barrier()
     player_heart = HeartPlayer()
     textSize(30)
-    menuButton = MenuOption(30, 100)
+    menuButton = MenuOptions(30, 100)
 
 def draw():
     global player, bullets, enemy, bullet, player_heart, enemies, menuButton
@@ -179,14 +194,8 @@ def draw():
         enemy.update()
         enemy.attack()
 
-    menuButton.sketch(290, 10, 0, 255, 0)
-    menuButton.sketchText("START", 305, 35, 255, 255, 255)
-
-    menuButton.sketch(390, 10, 0, 0, 255)
-    menuButton.sketchText("RESTART", 395, 35, 255, 255, 255)
-
-    menuButton.sketch(490, 10, 255, 0, 0)
-    menuButton.sketchText("STOP", 515, 35, 255, 255, 255)
+    menuButton.sketchMenu()
+    menuButton.react()
 
 def keyPressed(): #ruch statku przy kliknięciu strzałek
     if keyCode == LEFT:
