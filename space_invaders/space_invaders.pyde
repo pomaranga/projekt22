@@ -104,8 +104,12 @@ class Player():
 
 class Enemy(): #klasa Przeciwnik
     
+    def usun(self):
+        self.x=99999
+        self.hidden=True
     def __init__(self):
         self.position = 0
+        self.hidden=False
         self.x = 50
         self.y = 50
         self.down = 0
@@ -123,9 +127,10 @@ class Enemy(): #klasa Przeciwnik
         self.position = offset
         rect(self.x+self.position ,self.y, self.w, self.h)#zamienić później
         image(self.img, self.x+self.position, self.y, self.w, self.h) #wyświetlanie grafiki przeciwnika na wyzej ustalona pozycje
-        
-        
+
     def update(self): #poruszania w prawo, lewo i w dół
+        if self.hidden:
+            return
         self.x += self.speed
         if not (self.x+self.position <= width-self.w/2):
             self.down = self.y
@@ -143,7 +148,6 @@ class Enemy(): #klasa Przeciwnik
             self.lastAttackTime = millis()
             # tutaj dodać funkcję wystrzeliwującą pocisk
             rect(100, 100, 100, 100) # do usunięcia, gdy pojawi się pocisk (kwadrat pojawia się w momencie, gdy mają strzelić)
-
 
 class HeartPlayer():
     
@@ -189,10 +193,14 @@ def draw():
     bullet.is_out_of_bounds(player.x, player.y) #sprawdzanie czy pocisk jest poza obszarem gry
     player_heart.show()
     barrier.show()
+    bulletX=bullet.positionX
+    bulletY=bullet.positionY
     for offset, enemy in enumerate(enemies):
         enemy.show(offset * 100)
         enemy.update()
         enemy.attack()
+        if bulletX-(enemy.x+enemy.position) < 20 and (bulletX-(enemy.x+enemy.position) > -20) and (bulletY-enemy.y) < 20 and (bulletY-enemy.y > -20):
+            enemy.usun()
 
     menuButton.sketchMenu()
     menuButton.react()
