@@ -80,7 +80,7 @@ class Barrier():
         
         
 class Player():
-    
+    COOLDOWN = 30
     def __init__(self):
         self.speed = 3 #zmienić wartość na prędkość statku
         self.h = 20 #zmienić wartość na wysokość statku
@@ -89,6 +89,7 @@ class Player():
         self.y = height - self.h #wartość taka aby statek znajdował się na dole planszy
         self.goes_right = False # czy aktualnie ruch w prawo
         self.goes_left = False #czy aktualnie ruch w lewo
+        self.laser = []
 
     def show(self):
         fill(0)#usunąć kiedy będzie już model statku
@@ -100,7 +101,38 @@ class Player():
             self.x = 0 + self.w
         if not (self.x <= width): #statek nie może wyjść z prawej
             self.x = (width - self.w)
-
+            
+    def shoot(self):
+        if self.cool_down_counter == 0:
+                laser = Laser(x,y)
+                self.lasers.append(laser)
+                self.cool_down_counter = 1
+    def cooldown(self):
+        if self.cool_down_counter >= self.COOLDOWN:
+                self.cool_down_counter = 0
+        elif self.cool_down_counter > 0:
+                self.cool_down_counter += 1
+class Laser:
+    def __init__ (self,x,y):
+        self.x = x
+        self.y = y
+    
+    def draw(self, window):
+        window.blit(self.x,self.y)
+        
+    def move(self, vel):
+        self.y += vel
+        
+    def off_screen(self, height):
+        return self.y <= height and self.y >= 0
+    
+    def collision(self, obj):
+        return collide(obj, self)
+    
+    def collide(obj1,obj2):
+        offset_x = obj2.x - obj1.x
+        offset_y = obj2.y - obj1.y
+        return obj1.mask.overlap(obj2.mask, (offset_x, offset_y)) !=None
 
 class Enemy(): #klasa Przeciwnik
     
@@ -210,7 +242,6 @@ def keyPressed(): #ruch statku przy kliknięciu strzałek
         player.goes_left = True
     if keyCode == RIGHT:
         player.goes_right = True
-        
 def keyReleased(): #bezruch statku przy puszczeniu strzałek
     if keyCode == LEFT:
         player.goes_left = False
