@@ -93,7 +93,8 @@ class Player():
         self.y = height - self.h #wartość taka aby statek znajdował się na dole planszy
         self.goes_right = False # czy aktualnie ruch w prawo
         self.goes_left = False #czy aktualnie ruch w lewo
-        self.laser = []
+        self.lasers = []
+        self.cool_down_counter = 0
 
     def show(self):
         fill(0)#usunąć kiedy będzie już model statku
@@ -108,9 +109,10 @@ class Player():
                 
     def shoot(self):
         if self.cool_down_counter == 0:
-                laser = Laser(x,y)
+                laser = Laser(self.x, self.y)
                 self.lasers.append(laser)
                 self.cool_down_counter = 1
+                print("strzelono") # tu trzebaby narysować strzałę?
                 
     def cooldown(self):
         if self.cool_down_counter >= self.COOLDOWN:
@@ -144,6 +146,7 @@ class Enemy(): #klasa Przeciwnik
     def usun(self):
         self.x=99999
         self.hidden=True
+        
     def __init__(self):
         self.position = 0
         self.hidden=False
@@ -232,14 +235,15 @@ def draw():
         bullet.is_out_of_bounds(player.x, player.y) #sprawdzanie czy pocisk jest poza obszarem gry
         player_heart.show()
         barrier.show()
-        bulletX=bullet.positionX
-        bulletY=bullet.positionY
         for offset, enemy in enumerate(enemies):
             enemy.show(offset * 100)
             enemy.update()
             enemy.attack()
-            if bulletX-(enemy.x+enemy.position) < 20 and (bulletX-(enemy.x+enemy.position) > -20) and (bulletY-enemy.y) < 20 and (bulletY-enemy.y > -20):
+            if bullet.positionX-(enemy.x+enemy.position) < 20 \
+                and (bullet.positionX-(enemy.x+enemy.position) > -20) \
+                and (bullet.positionY-enemy.y) < 20 and (bullet.positionY-enemy.y > -20):
                 enemy.usun()
+        player.cooldown()
                 
     menuButton.sketchMenu()
     menuButton.react()
@@ -249,6 +253,8 @@ def keyPressed(): #ruch statku przy kliknięciu strzałek
         player.goes_left = True
     if keyCode == RIGHT:
         player.goes_right = True
+    if key == ' ':
+        player.shoot()
         
 def keyReleased(): #bezruch statku przy puszczeniu strzałek
     if keyCode == LEFT:
