@@ -37,13 +37,16 @@ class MenuOptions():
         self.sketchText("STOP", self.stopBtnPos + 25, self.btnGridLineStarts + 25, 255, 255, 255)
         
     def react(self):
-        if mousePressed:
-            if mouseX>0 and mouseX<0 and mouseY>0 and mouseY<0: # trzeba dopasowaćdo faktycznej pozycji przycisku
-                gamePlay = 1
-        
+        if mousePressed:       
             if mouseX>self.stopBtnPos and mouseX<self.stopBtnPos+self.width \
                 and mouseY>self.btnGridLineStarts and mouseY<self.btnGridLineStarts+self.height:
-                    exit()  
+                    stop()  
+            if mouseX>self.startBtnPos and mouseX<self.startBtnPos+self.width \
+                and mouseY>self.btnGridLineStarts and mouseY<self.btnGridLineStarts+self.height:
+                    start() 
+            if mouseX>self.restartBtnPos and mouseX<self.restartBtnPos+self.width \
+                and mouseY>self.btnGridLineStarts and mouseY<self.btnGridLineStarts+self.height:
+                    restart()
 
 class Bullet():
     
@@ -81,6 +84,7 @@ class Barrier():
         
 class Player():
     COOLDOWN = 30
+    
     def __init__(self):
         self.speed = 3 #zmienić wartość na prędkość statku
         self.h = 20 #zmienić wartość na wysokość statku
@@ -101,24 +105,24 @@ class Player():
             self.x = 0 + self.w
         if not (self.x <= width): #statek nie może wyjść z prawej
             self.x = (width - self.w)
-            
+                
     def shoot(self):
         if self.cool_down_counter == 0:
                 laser = Laser(x,y)
                 self.lasers.append(laser)
                 self.cool_down_counter = 1
+                
     def cooldown(self):
         if self.cool_down_counter >= self.COOLDOWN:
                 self.cool_down_counter = 0
         elif self.cool_down_counter > 0:
                 self.cool_down_counter += 1
+                
+                
 class Laser:
     def __init__ (self,x,y):
         self.x = x
         self.y = y
-    
-    def draw(self, window):
-        window.blit(self.x,self.y)
         
     def move(self, vel):
         self.y += vel
@@ -134,6 +138,7 @@ class Laser:
         offset_y = obj2.y - obj1.y
         return obj1.mask.overlap(obj2.mask, (offset_x, offset_y)) !=None
 
+
 class Enemy(): #klasa Przeciwnik
     
     def usun(self):
@@ -145,7 +150,7 @@ class Enemy(): #klasa Przeciwnik
         self.x = 50
         self.y = 50
         self.down = 0
-        self.speed = 2
+        self.speed = 3
         self.w=20
         self.h= 20
         self.img = loadImage("Przeciwnik_{}.png".format(int(random(4))))
@@ -198,8 +203,8 @@ class HeartPlayer():
             
 def setup():
     global gamePlay
-    gamePlay = 0
     #frameRate(10)
+    gamePlay = 0
     size(600, 600)
     global player, bullets, przeciwnik, bullet, player_heart,enemies, barrier, menuButton
     player = Player()
@@ -216,24 +221,26 @@ def setup():
     menuButton = MenuOptions(30, 100)
 
 def draw():
-    global player, bullets, enemy, bullet, player_heart, enemies, menuButton
+    global player, bullets, enemy, bullet, player_heart, enemies, menuButton, gamePlay
     background(100)
-    player.show()
-    player.update()
-    bullet.show() #tymczasowy pocisk
-    bullet.update(player.y)
-    bullet.is_out_of_bounds(player.x, player.y) #sprawdzanie czy pocisk jest poza obszarem gry
-    player_heart.show()
-    barrier.show()
-    bulletX=bullet.positionX
-    bulletY=bullet.positionY
-    for offset, enemy in enumerate(enemies):
-        enemy.show(offset * 100)
-        enemy.update()
-        enemy.attack()
-        if bulletX-(enemy.x+enemy.position) < 20 and (bulletX-(enemy.x+enemy.position) > -20) and (bulletY-enemy.y) < 20 and (bulletY-enemy.y > -20):
-            enemy.usun()
-
+    
+    if gamePlay: 
+        player.show()
+        player.update()
+        bullet.show() #tymczasowy pocisk
+        bullet.update(player.y)
+        bullet.is_out_of_bounds(player.x, player.y) #sprawdzanie czy pocisk jest poza obszarem gry
+        player_heart.show()
+        barrier.show()
+        bulletX=bullet.positionX
+        bulletY=bullet.positionY
+        for offset, enemy in enumerate(enemies):
+            enemy.show(offset * 100)
+            enemy.update()
+            enemy.attack()
+            if bulletX-(enemy.x+enemy.position) < 20 and (bulletX-(enemy.x+enemy.position) > -20) and (bulletY-enemy.y) < 20 and (bulletY-enemy.y > -20):
+                enemy.usun()
+                
     menuButton.sketchMenu()
     menuButton.react()
 
@@ -242,8 +249,22 @@ def keyPressed(): #ruch statku przy kliknięciu strzałek
         player.goes_left = True
     if keyCode == RIGHT:
         player.goes_right = True
+        
 def keyReleased(): #bezruch statku przy puszczeniu strzałek
     if keyCode == LEFT:
         player.goes_left = False
     if keyCode == RIGHT:
         player.goes_right = False
+
+def start():
+    global gamePlay
+    gamePlay = 1
+
+def stop():
+    global gamePlay
+    gamePlay = 0
+    
+def restart():
+    global gamePlay
+    setup()
+    gamePlay = 1
