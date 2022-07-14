@@ -215,7 +215,7 @@ class Gwiazdy():
         self.y = self.y + self.speed #jak szbko lecą w dol
         self.x = self.x + 1 #co ile przesuwaja sie w prawo
         if(frameCount % 2 == 0): #if(frameCount % (tu wpisujemy co ile klatek ) == 0)
-            if self.y > height:
+            if (self.y > height) or self.x > width :
                 self.y = 0
                 self.x = int(random(600))
       
