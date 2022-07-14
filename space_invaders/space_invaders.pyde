@@ -201,7 +201,23 @@ class HeartPlayer():
             #tutaj wstawić okno końca gry    
  
     def show(self):
-        text(self.player_heart, 30, 50)   
+        text(self.player_heart, 30, 50)
+        
+class Gwiazdy():
+    def __init__(self, x, y, speed):
+        self.x = x
+        self.y = y
+        self.speed = speed
+            
+    def ruch(self):
+        fill(255, 255, 255)
+        square(self.x, self.y, 5)
+        self.y = self.y + self.speed #jak szbko lecą w dol
+        self.x = self.x + 1 #co ile przesuwaja sie w prawo
+        if(frameCount % 2 == 0): #if(frameCount % (tu wpisujemy co ile klatek ) == 0)
+            if self.y > height:
+                self.y = 0
+                self.x = int(random(600))
       
             
 def setup():
@@ -209,7 +225,7 @@ def setup():
     #frameRate(10)
     gamePlay = 0
     size(600, 600)
-    global player, bullets, przeciwnik, bullet, player_heart,enemies, barrier, menuButton
+    global player, bullets, przeciwnik, bullet, player_heart,enemies, barrier, menuButton, gwiazda
     player = Player()
     enemy1 = Enemy()# póżniej można zamienić na listę przeciwników
     enemy2 = Enemy()
@@ -222,10 +238,12 @@ def setup():
     player_heart = HeartPlayer()
     textSize(30)
     menuButton = MenuOptions(30, 100)
+    gwiazda = Gwiazdy(50, 100, 2)
 
 def draw():
-    global player, bullets, enemy, bullet, player_heart, enemies, menuButton, gamePlay
+    global player, bullets, enemy, bullet, player_heart, enemies, menuButton, gamePlay, gwiazda
     background(100)
+    gwiazda.ruch()
     
     if gamePlay: 
         player.show()
