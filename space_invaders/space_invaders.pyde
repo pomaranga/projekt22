@@ -261,6 +261,9 @@ def draw():
                 and (bullet.positionX-(enemy.x+enemy.position) > -20) \
                 and (bullet.positionY-enemy.y) < 20 and (bullet.positionY-enemy.y > -20):
                 enemy.usun()
+            if (enemy.y >= player.y and enemy.x+enemy.position == player.x):#wykrywanie sytuacji, gdy przeciwnicy zeszli do poziomu gracza i zakańcza grę
+                stop();
+                # tu wyświetlenie końca gry, gdy ktoś go już stworzy
         player.cooldown()
                 
     menuButton.sketchMenu()
